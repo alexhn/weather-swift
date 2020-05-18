@@ -1,11 +1,3 @@
-//
-//  weather.swift
-//  weather
-//
-//  Created by Aleksandr Nikiforov on 17.05.2020.
-//  Copyright © 2020 Aleksandr Nikiforov. All rights reserved.
-//
-
 import Foundation
 
 class Weather {
@@ -13,9 +5,12 @@ class Weather {
     var finished = false
     var apiLaunched = false
     
-    func getTemp(location: String) -> String {
+    func getTemp(location: String) -> Void {
         apiLaunched = true
-        if let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Tallinn&appid=53c5a78495359ac3dafb611967438aef") {
+        
+        let encodedLocation = location.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+ 
+        if let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(encodedLocation!)&appid=53c5a78495359ac3dafb611967438aef") {
             URLSession.shared.dataTask(with: url) { (data, response, error) in
                 if error != nil {
                     print(error)
@@ -24,17 +19,17 @@ class Weather {
                         do {
                             let json = try JSON(data: data!)
                             let temp = json["main"]["temp"].stringValue
-                            return temp
+                            print("Temp at \(location) is: \(temp) F")
                         } catch {
                             
                         }
                     }
                 }
-                
                 self.finished = true
             }.resume()
+        } else {
+            self.finished = true
         }
-        return ""
     }
     
 }
