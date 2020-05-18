@@ -18,8 +18,8 @@ class Weather {
                     if data != nil {
                         do {
                             let json = try JSON(data: data!)
-                            let temp = json["main"]["temp"].stringValue
-                            print("Temp at \(location) is: \(temp) F")
+                            let temp = json["main"]["temp"].floatValue
+                            print("Temp at \(location) is: \(temp - 273.1) C")
                         } catch {
                             
                         }
